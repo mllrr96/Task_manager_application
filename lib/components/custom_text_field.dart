@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../utils/color_palette.dart';
 import '../utils/font_sizes.dart';
 
-class BuildTextField extends StatelessWidget {
+class CustomTextField extends StatelessWidget {
   final String hint;
   final TextEditingController? controller;
   final TextInputType inputType;
@@ -16,7 +16,7 @@ class BuildTextField extends StatelessWidget {
   final int? maxLength;
   final Function onChange;
 
-  const BuildTextField(
+  const CustomTextField(
       {super.key,
         required this.hint,
         this.controller,

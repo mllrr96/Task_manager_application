@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:task_manager_app/components/custom_app_bar.dart';
+import 'package:task_manager_app/components/custom_text_field.dart';
 import 'package:task_manager_app/components/widgets.dart';
 import 'package:task_manager_app/tasks/data/local/model/task_model.dart';
+import 'package:task_manager_app/tasks/presentation/bloc/tasks_bloc.dart';
+import 'package:task_manager_app/utils/color_palette.dart';
 import 'package:task_manager_app/utils/font_sizes.dart';
-
-import '../../../components/custom_app_bar.dart';
-import '../../../utils/color_palette.dart';
-import '../../../utils/util.dart';
-import '../bloc/tasks_bloc.dart';
-import '../../../components/build_text_field.dart';
+import 'package:task_manager_app/utils/util.dart';
 
 class UpdateTaskScreen extends StatefulWidget {
   final TaskModel taskModel;
@@ -118,7 +117,7 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
                             padding: const EdgeInsets.symmetric(
                                 vertical: 10, horizontal: 20),
                             decoration: BoxDecoration(
-                                color: kPrimaryColor.withOpacity(.1),
+                                color: kPrimaryColor.withValues(alpha: 0.1),
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(5))),
                             child: buildText(
@@ -142,7 +141,7 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
                           const SizedBox(
                             height: 10,
                           ),
-                          BuildTextField(
+                          CustomTextField(
                               hint: "Task Title",
                               controller: title,
                               inputType: TextInputType.text,
@@ -161,7 +160,7 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
                           const SizedBox(
                             height: 10,
                           ),
-                          BuildTextField(
+                          CustomTextField(
                               hint: "Task Description",
                               controller: description,
                               inputType: TextInputType.multiline,
@@ -173,12 +172,12 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
                             child: ElevatedButton(
                                 style: ButtonStyle(
                                   foregroundColor:
-                                      MaterialStateProperty.all<Color>(
+                                      WidgetStateProperty.all<Color>(
                                           Colors.white),
                                   backgroundColor:
-                                      MaterialStateProperty.all<Color>(
+                                      WidgetStateProperty.all<Color>(
                                           kPrimaryColor),
-                                  shape: MaterialStateProperty.all<
+                                  shape: WidgetStateProperty.all<
                                       RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(

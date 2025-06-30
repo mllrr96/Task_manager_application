@@ -11,11 +11,9 @@ import 'package:task_manager_app/utils/color_palette.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Bloc.observer = BlocStateOberver();
+  Bloc.observer = BlocStateObserver();
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  runApp(MyApp(
-    preferences: preferences,
-  ));
+  runApp(MyApp(preferences: preferences));
 }
 
 class MyApp extends StatelessWidget {
@@ -26,22 +24,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider(
-        create: (context) =>
-            TaskRepository(taskDataProvider: TaskDataProvider(preferences)),
-        child: BlocProvider(
-            create: (context) => TasksBloc(context.read<TaskRepository>()),
-            child: MaterialApp(
-              title: 'Task Manager',
-              debugShowCheckedModeBanner: false,
-              initialRoute: Pages.initial,
-              onGenerateRoute: onGenerateRoute,
-              theme: ThemeData(
-                fontFamily: 'Sora',
-                visualDensity: VisualDensity.adaptivePlatformDensity,
-                canvasColor: Colors.transparent,
-                colorScheme: ColorScheme.fromSeed(seedColor: kPrimaryColor),
-                useMaterial3: true,
-              ),
-            )));
+      create: (context) =>
+          TaskRepository(taskDataProvider: TaskDataProvider(preferences)),
+      child: BlocProvider(
+        create: (context) => TasksBloc(context.read<TaskRepository>()),
+        child: MaterialApp(
+          title: 'Task Manager',
+          debugShowCheckedModeBanner: false,
+          initialRoute: Pages.initial,
+          onGenerateRoute: onGenerateRoute,
+          theme: ThemeData(
+            fontFamily: 'Sora',
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+            canvasColor: Colors.transparent,
+            colorScheme: ColorScheme.fromSeed(seedColor: kPrimaryColor),
+            useMaterial3: true,
+          ),
+        ),
+      ),
+    );
   }
 }
