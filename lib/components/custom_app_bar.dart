@@ -29,7 +29,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       leading: showBackArrow
           ? IconButton(
-        padding: EdgeInsetsGeometry.all(16.0),
+              padding: EdgeInsetsGeometry.all(16.0),
               icon: SvgPicture.asset(
                 'assets/svgs/back_arrow.svg',
                 colorFilter: ColorFilter.mode(
