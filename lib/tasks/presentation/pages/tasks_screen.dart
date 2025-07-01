@@ -11,7 +11,7 @@ import 'package:task_manager_app/routes/pages.dart';
 import 'package:task_manager_app/tasks/presentation/bloc/tasks_bloc.dart';
 import 'package:task_manager_app/tasks/presentation/widget/task_item_view.dart';
 import 'package:task_manager_app/utils/color_palette.dart';
-import 'package:task_manager_app/utils/scaffold_messenger_extension.dart';
+import 'package:task_manager_app/utils/extensions/scaffold_messenger_extension.dart';
 
 class TasksScreen extends StatefulWidget {
   const TasksScreen({super.key});
