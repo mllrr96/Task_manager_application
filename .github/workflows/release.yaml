@@ -1,0 +1,63 @@
+name: Build Flutter APK's and iPA files
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          architecture: x64
+
+      - name: Setup Java
+        continue-on-error: true
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '21'
+
+      - name: Run flutter doctor
+        run: flutter doctor -v
+
+      - name: Install Dependencies
+        run: |
+          flutter pub get
+
+      - name: Build universal APK
+        run: |
+          flutter build apk --release --build-number=4
+
+      - name: Build split APKs
+        run: |
+          flutter build apk --release --split-per-abi
+
+      - name: Build iPA
+        run: |
+          flutter build ios --release --no-codesign
+          cd build/ios/iphoneos
+          mkdir Payload
+          cd Payload
+          ln -s ../Runner.app
+          cd ..
+          zip -r Task-Manager-${GITHUB_REF#refs/*/}.ipa Payload
+
+      - name: Rename APK Files
+        run: |
+          cd build/app/outputs/flutter-apk
+          mv app-armeabi-v7a-release.apk Task-Manager-${GITHUB_REF_NAME}-armeabi-v7a.apk
+          mv app-arm64-v8a-release.apk Task-Manager-${GITHUB_REF_NAME}-arm64-v8a.apk
+          mv app-x86_64-release.apk Task-Manager-${GITHUB_REF_NAME}-x86_64.apk
+          mv app-release.apk  Task-Manager-${GITHUB_REF_NAME}-universal.apk
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1.13.0
+        with:
+          artifacts: "build/app/outputs/flutter-apk/*.apk,build/ios/iphoneos/*.ipa"
+          allowUpdates: true
