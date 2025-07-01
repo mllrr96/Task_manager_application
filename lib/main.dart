@@ -7,7 +7,7 @@ import 'package:task_manager_app/routes/pages.dart';
 import 'package:task_manager_app/tasks/data/local/data_sources/tasks_data_provider.dart';
 import 'package:task_manager_app/tasks/data/repository/task_repository.dart';
 import 'package:task_manager_app/tasks/presentation/bloc/tasks_bloc.dart';
-import 'package:task_manager_app/utils/color_palette.dart';
+import 'package:task_manager_app/utils/theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,49 +29,13 @@ class MyApp extends StatelessWidget {
       child: BlocProvider(
         create: (context) => TasksBloc(context.read<TaskRepository>()),
         child: MaterialApp(
-          title: 'Task Manager',
-          debugShowCheckedModeBanner: false,
-          initialRoute: Pages.initial,
-          onGenerateRoute: onGenerateRoute,
-          themeMode: ThemeMode.system,
-          theme: ThemeData(
-            fontFamily: 'Sora',
-            canvasColor: Colors.transparent,
-            colorScheme: ColorScheme.fromSeed(seedColor: kPrimaryColor),
-            useMaterial3: true,
-          ).copyWith(
-            scaffoldBackgroundColor: Colors.white,
-            filledButtonTheme: FilledButtonThemeData(
-              style: ButtonStyle(
-                shape: WidgetStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                backgroundColor: WidgetStateProperty.all(Color(0xFFB0AFAF)),
-              ),
-            ),
-          ),
-          darkTheme: ThemeData(
-            fontFamily: 'Sora',
-            canvasColor: Colors.transparent,
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: kPrimaryColor,
-              brightness: Brightness.dark,
-            ),
-            useMaterial3: true,
-          ).copyWith(
-            filledButtonTheme: FilledButtonThemeData(
-              style: ButtonStyle(
-                shape: WidgetStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
+            title: 'Task Manager',
+            debugShowCheckedModeBanner: false,
+            initialRoute: Pages.initial,
+            onGenerateRoute: onGenerateRoute,
+            themeMode: ThemeMode.system,
+            theme: AppTheme.light,
+            darkTheme: AppTheme.dark),
       ),
     );
   }

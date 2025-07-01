@@ -51,7 +51,10 @@ class _TasksScreenState extends State<TasksScreen> {
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   elevation: 1,
-                  icon: Icon(LucideIcons.list_filter_plus),
+                  icon: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(LucideIcons.list_filter_plus),
+                  ),
                   onSelected: (value) {
                     switch (value) {
                       case 0:
@@ -146,18 +149,11 @@ class _TasksScreenState extends State<TasksScreen> {
 
                   if (state is LoadTaskFailure) {
                     return Center(
-                        child: Text(
-                      state.error,
-                      style: theme.textTheme.bodySmall,
-                    )
-                        // buildText(
-                        //     state.error,
-                        //     kBlackColor,
-                        //     textMedium,
-                        //     FontWeight.normal,
-                        //     TextAlign.center,
-                        //     TextOverflow.clip),
-                        );
+                      child: Text(
+                        state.error,
+                        style: theme.textTheme.bodySmall,
+                      ),
+                    );
                   }
 
                   if (state is FetchTasksSuccess) {
