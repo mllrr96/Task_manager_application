@@ -6,7 +6,7 @@ import 'package:task_manager_app/routes/pages.dart';
 import 'package:task_manager_app/tasks/data/local/model/task_model.dart';
 import 'package:task_manager_app/tasks/presentation/bloc/tasks_bloc.dart';
 import 'package:task_manager_app/utils/color_palette.dart';
-import 'package:task_manager_app/utils/datetime_extension.dart';
+import 'package:task_manager_app/utils/extensions/datetime_extension.dart';
 
 class TaskItemView extends StatefulWidget {
   final TaskModel taskModel;

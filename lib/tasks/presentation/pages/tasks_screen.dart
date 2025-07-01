@@ -44,87 +44,91 @@ class _TasksScreenState extends State<TasksScreen> {
             title: 'Tasks',
             showBackArrow: false,
             actionWidgets: [
-              Padding(
-                padding: const EdgeInsets.only(right: 16.0),
-                child: PopupMenuButton<int>(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+              if (context.read<TasksBloc>().state is FetchTasksSuccess &&
+                  (context.read<TasksBloc>().state as FetchTasksSuccess)
+                      .tasks
+                      .isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(right: 16.0),
+                  child: PopupMenuButton<int>(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    elevation: 1,
+                    icon: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(LucideIcons.list_filter_plus),
+                    ),
+                    onSelected: (value) {
+                      switch (value) {
+                        case 0:
+                          {
+                            context
+                                .read<TasksBloc>()
+                                .add(SortTaskEvent(sortOption: 0));
+                            break;
+                          }
+                        case 1:
+                          {
+                            context
+                                .read<TasksBloc>()
+                                .add(SortTaskEvent(sortOption: 1));
+                            break;
+                          }
+                        case 2:
+                          {
+                            context
+                                .read<TasksBloc>()
+                                .add(SortTaskEvent(sortOption: 2));
+                            break;
+                          }
+                      }
+                    },
+                    itemBuilder: (BuildContext context) {
+                      return [
+                        PopupMenuItem<int>(
+                          value: 0,
+                          child: Row(
+                            children: [
+                              Icon(LucideIcons.calendar_days),
+                              const Gap(10),
+                              Text(
+                                'Sort by date',
+                                style: theme.textTheme.labelMedium,
+                              ),
+                            ],
+                          ),
+                        ),
+                        PopupMenuItem<int>(
+                          value: 1,
+                          child: Row(
+                            children: [
+                              Icon(LucideIcons.clipboard_check),
+                              const Gap(10),
+                              Text(
+                                'Completed tasks',
+                                style: theme.textTheme.labelMedium,
+                              ),
+                            ],
+                          ),
+                        ),
+                        PopupMenuItem<int>(
+                          value: 2,
+                          child: Row(
+                            children: [
+                              Icon(LucideIcons.clipboard_list),
+                              const Gap(10),
+                              Text(
+                                'Pending tasks',
+                                style: theme.textTheme.labelMedium,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ];
+                    },
                   ),
-                  elevation: 1,
-                  icon: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Icon(LucideIcons.list_filter_plus),
-                  ),
-                  onSelected: (value) {
-                    switch (value) {
-                      case 0:
-                        {
-                          context
-                              .read<TasksBloc>()
-                              .add(SortTaskEvent(sortOption: 0));
-                          break;
-                        }
-                      case 1:
-                        {
-                          context
-                              .read<TasksBloc>()
-                              .add(SortTaskEvent(sortOption: 1));
-                          break;
-                        }
-                      case 2:
-                        {
-                          context
-                              .read<TasksBloc>()
-                              .add(SortTaskEvent(sortOption: 2));
-                          break;
-                        }
-                    }
-                  },
-                  itemBuilder: (BuildContext context) {
-                    return [
-                      PopupMenuItem<int>(
-                        value: 0,
-                        child: Row(
-                          children: [
-                            Icon(LucideIcons.calendar_days),
-                            const Gap(10),
-                            Text(
-                              'Sort by date',
-                              style: theme.textTheme.labelMedium,
-                            ),
-                          ],
-                        ),
-                      ),
-                      PopupMenuItem<int>(
-                        value: 1,
-                        child: Row(
-                          children: [
-                            Icon(LucideIcons.clipboard_check),
-                            const Gap(10),
-                            Text(
-                              'Completed tasks',
-                              style: theme.textTheme.labelMedium,
-                            ),
-                          ],
-                        ),
-                      ),
-                      PopupMenuItem<int>(
-                        value: 2,
-                        child: Row(
-                          children: [
-                            Icon(LucideIcons.clipboard_list),
-                            const Gap(10),
-                            Text(
-                              'Pending tasks',
-                              style: theme.textTheme.labelMedium,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ];
-                  },
                 ),
-              ),
             ],
           ),
           body: GestureDetector(
@@ -201,7 +205,7 @@ class _TasksScreenState extends State<TasksScreen> {
                                       ?.copyWith(fontWeight: FontWeight.w600),
                                 ),
                                 Text(
-                                  'Manage your task schedule easily\nand efficiently',
+                                  'Manage your task schedule easily and efficiently',
                                   style: theme.textTheme.labelMedium,
                                 ),
                               ],

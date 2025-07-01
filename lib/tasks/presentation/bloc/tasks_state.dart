@@ -8,6 +8,9 @@ final class FetchTasksSuccess extends TasksState {
   final bool isSearching;
 
   FetchTasksSuccess({required this.tasks, this.isSearching = false});
+
+  @override
+  String toString() => 'FetchTasksSuccess(tasks: $tasks, isSearching: $isSearching)';
 }
 
 final class AddTasksSuccess extends TasksState {}
