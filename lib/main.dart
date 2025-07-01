@@ -36,7 +36,6 @@ class MyApp extends StatelessWidget {
           themeMode: ThemeMode.system,
           theme: ThemeData(
             fontFamily: 'Sora',
-            visualDensity: VisualDensity.adaptivePlatformDensity,
             canvasColor: Colors.transparent,
             colorScheme: ColorScheme.fromSeed(seedColor: kPrimaryColor),
             useMaterial3: true,
@@ -55,7 +54,6 @@ class MyApp extends StatelessWidget {
           ),
           darkTheme: ThemeData(
             fontFamily: 'Sora',
-            visualDensity: VisualDensity.adaptivePlatformDensity,
             canvasColor: Colors.transparent,
             colorScheme: ColorScheme.fromSeed(
               seedColor: kPrimaryColor,

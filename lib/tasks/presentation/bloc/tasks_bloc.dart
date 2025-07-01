@@ -23,12 +23,6 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
   Future<void> _addNewTask(AddNewTaskEvent event, Emitter<TasksState> emit) async {
     emit(TasksLoading());
     try {
-      if (event.taskModel.title.trim().isEmpty) {
-        return emit(AddTaskFailure(error: 'Task title cannot be blank'));
-      }
-      if (event.taskModel.description.trim().isEmpty) {
-        return emit(AddTaskFailure(error: 'Task description cannot be blank'));
-      }
       if (event.taskModel.startDateTime == null) {
         return emit(AddTaskFailure(error: 'Missing task start date'));
       }
@@ -56,13 +50,6 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
 
   Future<void> _updateTask(UpdateTaskEvent event, Emitter<TasksState> emit) async {
     try {
-      if (event.taskModel.title.trim().isEmpty) {
-        return emit(UpdateTaskFailure(error: 'Task title cannot be blank'));
-      }
-      if (event.taskModel.description.trim().isEmpty) {
-        return emit(
-            UpdateTaskFailure(error: 'Task description cannot be blank'));
-      }
       if (event.taskModel.startDateTime == null) {
         return emit(UpdateTaskFailure(error: 'Missing task start date'));
       }

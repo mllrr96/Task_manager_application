@@ -1,12 +1,12 @@
 class TaskModel {
-  String id;
-  String title;
-  String description;
-  DateTime? startDateTime;
-  DateTime? stopDateTime;
-  bool completed;
+  final String id;
+  final String title;
+  final String description;
+  final DateTime? startDateTime;
+  final DateTime? stopDateTime;
+  final bool completed;
 
-  TaskModel({
+  const TaskModel({
     required this.id,
     required this.title,
     required this.description,
@@ -26,6 +26,23 @@ class TaskModel {
     };
   }
 
+  TaskModel copyWith({
+    String? id,
+    String? title,
+    String? description,
+    DateTime? startDateTime,
+    DateTime? stopDateTime,
+    bool? completed,
+  }) {
+    return TaskModel(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      startDateTime: startDateTime ?? this.startDateTime,
+      stopDateTime: stopDateTime ?? this.stopDateTime,
+      completed: completed ?? this.completed,
+    );
+  }
 
   factory TaskModel.fromJson(Map<String, dynamic> json) {
     return TaskModel(

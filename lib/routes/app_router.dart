@@ -5,7 +5,6 @@ import 'package:task_manager_app/splash_screen.dart';
 import 'package:task_manager_app/tasks/data/local/model/task_model.dart';
 import 'package:task_manager_app/tasks/presentation/pages/add_update_task_screen.dart';
 import 'package:task_manager_app/tasks/presentation/pages/tasks_screen.dart';
-import 'package:task_manager_app/tasks/presentation/pages/update_task_screen.dart';
 
 Route onGenerateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
@@ -17,14 +16,10 @@ Route onGenerateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         builder: (context) => const TasksScreen(),
       );
-    case Pages.createNewTask:
+    case Pages.addUpdateTask:
+      final args = routeSettings.arguments as TaskModel?;
       return MaterialPageRoute(
-        builder: (context) => const AddUpdateTaskScreen(),
-      );
-    case Pages.updateTask:
-      final args = routeSettings.arguments as TaskModel;
-      return MaterialPageRoute(
-        builder: (context) => UpdateTaskScreen(taskModel: args),
+        builder: (context) => AddUpdateTaskScreen(task: args),
       );
     default:
       return MaterialPageRoute(

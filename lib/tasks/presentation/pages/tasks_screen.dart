@@ -168,12 +168,8 @@ class _TasksScreenState extends State<TasksScreen> {
                                   hint: "Search recent task",
                                   controller: searchController,
                                   inputType: TextInputType.text,
-                                  prefixIcon: const Icon(
-                                    Icons.search,
-                                    color: kGrey2,
-                                  ),
-                                  // fillColor: kWhiteColor,
-                                  onChange: (value) {
+                                  prefixIcon: const Icon(LucideIcons.search),
+                                  onChanged: (value) {
                                     context
                                         .read<TasksBloc>()
                                         .add(SearchTaskEvent(keywords: value));
@@ -227,7 +223,7 @@ class _TasksScreenState extends State<TasksScreen> {
               size: 45,
             ),
             onPressed: () async {
-              await Navigator.pushNamed(context, Pages.createNewTask);
+              await Navigator.pushNamed(context, Pages.addUpdateTask);
             },
           ),
         ),

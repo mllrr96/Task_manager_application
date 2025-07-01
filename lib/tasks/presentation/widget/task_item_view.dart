@@ -82,7 +82,7 @@ class _TaskItemViewState extends State<TaskItemView> {
                         switch (value) {
                           case 0:
                             {
-                              Navigator.pushNamed(context, Pages.updateTask,
+                              Navigator.pushNamed(context, Pages.addUpdateTask,
                                   arguments: widget.taskModel);
                               break;
                             }
