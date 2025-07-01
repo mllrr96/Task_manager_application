@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'components/widgets.dart';
+import 'package:gap/gap.dart';
 import 'utils/color_palette.dart';
-import 'utils/font_sizes.dart';
 
 class PageNotFound extends StatefulWidget {
   const PageNotFound({super.key});
@@ -14,6 +12,7 @@ class PageNotFound extends StatefulWidget {
 class _PageNotFoundState extends State<PageNotFound> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       backgroundColor: kWhiteColor,
       body: Center(
@@ -21,22 +20,15 @@ class _PageNotFoundState extends State<PageNotFound> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            buildText(
+            Text(
               'Page not found',
-              kBlackColor,
-              textBold,
-              FontWeight.w600,
-              TextAlign.center,
-              TextOverflow.clip,
+              style: theme.textTheme.headlineLarge
+                  ?.copyWith(fontWeight: FontWeight.w600),
             ),
-            const SizedBox(height: 10),
-            buildText(
+            const Gap(10),
+            Text(
               'Something went wrong',
-              kBlackColor,
-              textTiny,
-              FontWeight.normal,
-              TextAlign.center,
-              TextOverflow.clip,
+              style: theme.textTheme.labelSmall,
             ),
           ],
         ),

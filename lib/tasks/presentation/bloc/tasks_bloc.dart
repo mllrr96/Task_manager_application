@@ -20,7 +20,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     on<SearchTaskEvent>(_searchTasks);
   }
 
-  _addNewTask(AddNewTaskEvent event, Emitter<TasksState> emit) async {
+  Future<void> _addNewTask(AddNewTaskEvent event, Emitter<TasksState> emit) async {
     emit(TasksLoading());
     try {
       if (event.taskModel.title.trim().isEmpty) {
@@ -54,7 +54,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     }
   }
 
-  _updateTask(UpdateTaskEvent event, Emitter<TasksState> emit) async {
+  Future<void> _updateTask(UpdateTaskEvent event, Emitter<TasksState> emit) async {
     try {
       if (event.taskModel.title.trim().isEmpty) {
         return emit(UpdateTaskFailure(error: 'Task title cannot be blank'));
@@ -78,7 +78,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     }
   }
 
-  _deleteTask(DeleteTaskEvent event, Emitter<TasksState> emit) async {
+  Future<void> _deleteTask(DeleteTaskEvent event, Emitter<TasksState> emit) async {
     emit(TasksLoading());
     try {
       final tasks = await taskRepository.deleteTask(event.taskModel);
@@ -88,12 +88,12 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     }
   }
 
-  _sortTasks(SortTaskEvent event, Emitter<TasksState> emit) async {
+  Future<void> _sortTasks(SortTaskEvent event, Emitter<TasksState> emit) async {
     final tasks = await taskRepository.sortTasks(event.sortOption);
     return emit(FetchTasksSuccess(tasks: tasks));
   }
 
-  _searchTasks(SearchTaskEvent event, Emitter<TasksState> emit) async {
+  Future<void> _searchTasks(SearchTaskEvent event, Emitter<TasksState> emit) async {
     final tasks = await taskRepository.searchTasks(event.keywords);
     return emit(FetchTasksSuccess(tasks: tasks, isSearching: true));
   }

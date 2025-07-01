@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../utils/color_palette.dart';
-import '../utils/font_sizes.dart';
+import 'package:task_manager_app/utils/color_palette.dart';
 
 class CustomTextField extends StatelessWidget {
   final String hint;
@@ -11,27 +9,28 @@ class CustomTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final bool obscureText;
   final bool enabled;
-  final Color fillColor;
-  final Color hintColor;
+  // final Color fillColor;
+  // final Color hintColor;
   final int? maxLength;
   final Function onChange;
 
   const CustomTextField(
       {super.key,
-        required this.hint,
-        this.controller,
-        required this.inputType,
-        this.prefixIcon,
-        this.suffixIcon,
-        this.obscureText = false,
-        this.enabled = true,
-        this.fillColor = kWhiteColor,
-        this.hintColor = kGrey1,
-        this.maxLength,
-        required this.onChange});
+      required this.hint,
+      this.controller,
+      required this.inputType,
+      this.prefixIcon,
+      this.suffixIcon,
+      this.obscureText = false,
+      this.enabled = true,
+      // this.fillColor = kWhiteColor,
+      // this.hintColor = kGrey1,
+      this.maxLength,
+      required this.onChange});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return TextFormField(
       onChanged: (value) {
         onChange(value);
@@ -45,31 +44,38 @@ class CustomTextField extends StatelessWidget {
       enabled: enabled,
       decoration: InputDecoration(
         counterText: "",
-        fillColor: fillColor,
+        // fillColor: fillColor,
         filled: true,
         contentPadding:
-        const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10),
+            const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10),
         hintText: hint,
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        hintStyle: TextStyle(
-          fontSize: textMedium,
+        hintStyle: theme.textTheme.bodySmall?.copyWith(
+          // color: hintColor,
           fontWeight: FontWeight.w300,
-          color: hintColor,
         ),
+        // TextStyle(
+        //   fontSize: textMedium,
+        //   fontWeight: FontWeight.w300,
+        //   color: hintColor,
+        // ),
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
-        errorStyle: const TextStyle(
-          fontSize: textMedium,
-          fontWeight: FontWeight.normal,
+        errorStyle: theme.textTheme.bodySmall?.copyWith(
           color: kRed,
         ),
+        // const TextStyle(
+        //   fontSize: textMedium,
+        //   fontWeight: FontWeight.normal,
+        //   color: kRed,
+        // ),
         focusedBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(5)),
           borderSide: BorderSide(width: 1, color: kPrimaryColor),
         ),
         disabledBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(5)),
-          borderSide: BorderSide(width: 0, color: fillColor),
+          borderSide: BorderSide(width: 0,),
         ),
         enabledBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -88,11 +94,7 @@ class CustomTextField extends StatelessWidget {
         hoverColor: kWhiteColor,
       ),
       cursorColor: kPrimaryColor,
-      style: const TextStyle(
-        fontSize: textMedium,
-        fontWeight: FontWeight.normal,
-        color: kBlackColor,
-      ),
+      style: theme.textTheme.bodySmall,
     );
   }
 }

@@ -2,16 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gap/gap.dart';
 import 'package:task_manager_app/components/custom_app_bar.dart';
 import 'package:task_manager_app/components/custom_text_field.dart';
-import 'package:task_manager_app/components/widgets.dart';
 import 'package:task_manager_app/routes/pages.dart';
 import 'package:task_manager_app/tasks/presentation/bloc/tasks_bloc.dart';
 import 'package:task_manager_app/tasks/presentation/widget/task_item_view.dart';
 import 'package:task_manager_app/utils/color_palette.dart';
-import 'package:task_manager_app/utils/font_sizes.dart';
-import 'package:task_manager_app/utils/util.dart';
+import 'package:task_manager_app/utils/scaffold_messenger_extension.dart';
 
 class TasksScreen extends StatefulWidget {
   const TasksScreen({super.key});
@@ -32,133 +32,107 @@ class _TasksScreenState extends State<TasksScreen> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    final theme = Theme.of(context);
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
+      value: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
+        systemNavigationBarColor: theme.scaffoldBackgroundColor,
       ),
       child: ScaffoldMessenger(
         child: Scaffold(
-          backgroundColor: kWhiteColor,
           appBar: CustomAppBar(
-            title: 'Hi Jerome',
+            title: 'Tasks',
             showBackArrow: false,
             actionWidgets: [
-              PopupMenuButton<int>(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                elevation: 1,
-                onSelected: (value) {
-                  switch (value) {
-                    case 0:
-                      {
-                        context
-                            .read<TasksBloc>()
-                            .add(SortTaskEvent(sortOption: 0));
-                        break;
-                      }
-                    case 1:
-                      {
-                        context
-                            .read<TasksBloc>()
-                            .add(SortTaskEvent(sortOption: 1));
-                        break;
-                      }
-                    case 2:
-                      {
-                        context
-                            .read<TasksBloc>()
-                            .add(SortTaskEvent(sortOption: 2));
-                        break;
-                      }
-                  }
-                },
-                itemBuilder: (BuildContext context) {
-                  return [
-                    PopupMenuItem<int>(
-                      value: 0,
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            'assets/svgs/calender.svg',
-                            width: 15,
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          buildText(
+              Padding(
+                padding: const EdgeInsets.only(right: 16.0),
+                child: PopupMenuButton<int>(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  elevation: 1,
+                  icon: Icon(LucideIcons.list_filter_plus),
+                  onSelected: (value) {
+                    switch (value) {
+                      case 0:
+                        {
+                          context
+                              .read<TasksBloc>()
+                              .add(SortTaskEvent(sortOption: 0));
+                          break;
+                        }
+                      case 1:
+                        {
+                          context
+                              .read<TasksBloc>()
+                              .add(SortTaskEvent(sortOption: 1));
+                          break;
+                        }
+                      case 2:
+                        {
+                          context
+                              .read<TasksBloc>()
+                              .add(SortTaskEvent(sortOption: 2));
+                          break;
+                        }
+                    }
+                  },
+                  itemBuilder: (BuildContext context) {
+                    return [
+                      PopupMenuItem<int>(
+                        value: 0,
+                        child: Row(
+                          children: [
+                            Icon(LucideIcons.calendar_days),
+                            const Gap(10),
+                            Text(
                               'Sort by date',
-                              kBlackColor,
-                              textSmall,
-                              FontWeight.normal,
-                              TextAlign.start,
-                              TextOverflow.clip)
-                        ],
+                              style: theme.textTheme.labelMedium,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    PopupMenuItem<int>(
-                      value: 1,
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            'assets/svgs/task_checked.svg',
-                            width: 15,
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          buildText(
+                      PopupMenuItem<int>(
+                        value: 1,
+                        child: Row(
+                          children: [
+                            Icon(LucideIcons.clipboard_check),
+                            const Gap(10),
+                            Text(
                               'Completed tasks',
-                              kBlackColor,
-                              textSmall,
-                              FontWeight.normal,
-                              TextAlign.start,
-                              TextOverflow.clip)
-                        ],
+                              style: theme.textTheme.labelMedium,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    PopupMenuItem<int>(
-                      value: 2,
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            'assets/svgs/task.svg',
-                            width: 15,
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          buildText(
+                      PopupMenuItem<int>(
+                        value: 2,
+                        child: Row(
+                          children: [
+                            Icon(LucideIcons.clipboard_list),
+                            const Gap(10),
+                            Text(
                               'Pending tasks',
-                              kBlackColor,
-                              textSmall,
-                              FontWeight.normal,
-                              TextAlign.start,
-                              TextOverflow.clip)
-                        ],
+                              style: theme.textTheme.labelMedium,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ];
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 20),
-                  child: SvgPicture.asset('assets/svgs/filter.svg'),
+                    ];
+                  },
                 ),
               ),
             ],
           ),
           body: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () => FocusScope.of(context).unfocus(),
+            onTap: FocusScope.of(context).unfocus,
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: BlocConsumer<TasksBloc, TasksState>(
                 listener: (context, state) {
                   if (state is LoadTaskFailure) {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(getSnackBar(state.error, kRed));
+                    context.showErrorSnackBar(state.error);
                   }
-
                   if (state is AddTaskFailure || state is UpdateTaskFailure) {
                     context.read<TasksBloc>().add(FetchTaskEvent());
                   }
@@ -172,14 +146,18 @@ class _TasksScreenState extends State<TasksScreen> {
 
                   if (state is LoadTaskFailure) {
                     return Center(
-                      child: buildText(
-                          state.error,
-                          kBlackColor,
-                          textMedium,
-                          FontWeight.normal,
-                          TextAlign.center,
-                          TextOverflow.clip),
-                    );
+                        child: Text(
+                      state.error,
+                      style: theme.textTheme.bodySmall,
+                    )
+                        // buildText(
+                        //     state.error,
+                        //     kBlackColor,
+                        //     textMedium,
+                        //     FontWeight.normal,
+                        //     TextAlign.center,
+                        //     TextOverflow.clip),
+                        );
                   }
 
                   if (state is FetchTasksSuccess) {
@@ -194,29 +172,22 @@ class _TasksScreenState extends State<TasksScreen> {
                                     Icons.search,
                                     color: kGrey2,
                                   ),
-                                  fillColor: kWhiteColor,
+                                  // fillColor: kWhiteColor,
                                   onChange: (value) {
                                     context
                                         .read<TasksBloc>()
                                         .add(SearchTaskEvent(keywords: value));
                                   }),
-                              const SizedBox(
-                                height: 20,
-                              ),
+                              const Gap(20),
                               Expanded(
                                 child: ListView.separated(
-                                  shrinkWrap: true,
                                   itemCount: state.tasks.length,
                                   itemBuilder: (context, index) {
                                     return TaskItemView(
                                         taskModel: state.tasks[index]);
                                   },
-                                  separatorBuilder:
-                                      (BuildContext context, int index) {
-                                    return const Divider(
-                                      color: kGrey3,
-                                    );
-                                  },
+                                  separatorBuilder: (_, __) =>
+                                      const Divider(color: kGrey3),
                                 ),
                               ),
                             ],
@@ -231,23 +202,16 @@ class _TasksScreenState extends State<TasksScreen> {
                                   height: size.height * .20,
                                   width: size.width,
                                 ),
-                                const SizedBox(
-                                  height: 50,
+                                const Gap(50),
+                                Text(
+                                  'Schedule your tasks',
+                                  style: theme.textTheme.headlineLarge
+                                      ?.copyWith(fontWeight: FontWeight.w600),
                                 ),
-                                buildText(
-                                    'Schedule your tasks',
-                                    kBlackColor,
-                                    textBold,
-                                    FontWeight.w600,
-                                    TextAlign.center,
-                                    TextOverflow.clip),
-                                buildText(
-                                    'Manage your task schedule easily\nand efficiently',
-                                    kBlackColor.withValues(alpha: 0.5),
-                                    textSmall,
-                                    FontWeight.normal,
-                                    TextAlign.center,
-                                    TextOverflow.clip),
+                                Text(
+                                  'Manage your task schedule easily\nand efficiently',
+                                  style: theme.textTheme.labelMedium,
+                                ),
                               ],
                             ),
                           );
@@ -257,13 +221,13 @@ class _TasksScreenState extends State<TasksScreen> {
               ),
             ),
           ),
-          floatingActionButton: FloatingActionButton(
+          floatingActionButton: FloatingActionButton.large(
             child: const Icon(
               Icons.add_circle,
-              color: kPrimaryColor,
+              size: 45,
             ),
-            onPressed: () {
-              Navigator.pushNamed(context, Pages.createNewTask);
+            onPressed: () async {
+              await Navigator.pushNamed(context, Pages.createNewTask);
             },
           ),
         ),

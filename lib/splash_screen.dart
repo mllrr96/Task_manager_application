@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'components/widgets.dart';
+import 'package:gap/gap.dart';
 import 'routes/pages.dart';
 import 'utils/color_palette.dart';
-import 'utils/font_sizes.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -18,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
   }
 
-  startTimer() async {
+  Future<void> startTimer() async {
     await Future.delayed(
       const Duration(milliseconds: 3000),
       () {
@@ -34,6 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       backgroundColor: kPrimaryColor,
       body: Center(
@@ -45,16 +45,21 @@ class _SplashScreenState extends State<SplashScreen> {
               'assets/images/app_logo.png',
               width: 100,
             ),
-            const SizedBox(
-              height: 20,
+            Gap(20),
+            Text(
+              'Everything Tasks',
+              style: theme.textTheme.headlineLarge?.copyWith(
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
             ),
-            buildText('Everything Tasks', kWhiteColor, textBold,
-                FontWeight.w600, TextAlign.center, TextOverflow.clip),
-            const SizedBox(
-              height: 10,
+            Gap(10),
+            Text(
+              'Schedule your week with ease',
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: Colors.white,
+              ),
             ),
-            buildText('Schedule your week with ease', kWhiteColor, textTiny,
-                FontWeight.normal, TextAlign.center, TextOverflow.clip),
           ],
         ),
       ),

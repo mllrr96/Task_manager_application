@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import '../../../components/widgets.dart';
-import '../../../routes/pages.dart';
-import '../../../utils/color_palette.dart';
-import '../../../utils/font_sizes.dart';
-import '../../../utils/util.dart';
-import '../../data/local/model/task_model.dart';
-import '../bloc/tasks_bloc.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
+import 'package:gap/gap.dart';
+import 'package:task_manager_app/routes/pages.dart';
+import 'package:task_manager_app/tasks/data/local/model/task_model.dart';
+import 'package:task_manager_app/tasks/presentation/bloc/tasks_bloc.dart';
+import 'package:task_manager_app/utils/color_palette.dart';
+import 'package:task_manager_app/utils/datetime_extension.dart';
 
 class TaskItemView extends StatefulWidget {
   final TaskModel taskModel;
@@ -21,157 +20,150 @@ class TaskItemView extends StatefulWidget {
 class _TaskItemViewState extends State<TaskItemView> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
-        margin: const EdgeInsets.only(bottom: 10),
-        padding: const EdgeInsets.all(0),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Checkbox(
+      margin: const EdgeInsets.only(bottom: 10),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Transform.scale(
+            scale: 1.5,
+            child: Checkbox(
                 value: widget.taskModel.completed,
+                splashRadius: 30,
                 onChanged: (value) {
-                  var taskModel = TaskModel(
-                      id: widget.taskModel.id,
-                      title: widget.taskModel.title,
-                      description: widget.taskModel.description,
-                      completed: !widget.taskModel.completed,
-                      startDateTime: widget.taskModel.startDateTime,
-                      stopDateTime: widget.taskModel.stopDateTime);
+                  final taskModel = TaskModel(
+                    id: widget.taskModel.id,
+                    title: widget.taskModel.title,
+                    description: widget.taskModel.description,
+                    completed: !widget.taskModel.completed,
+                    startDateTime: widget.taskModel.startDateTime,
+                    stopDateTime: widget.taskModel.stopDateTime,
+                  );
                   context
                       .read<TasksBloc>()
                       .add(UpdateTaskEvent(taskModel: taskModel));
                 }),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+          ),
+          Gap(10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.taskModel.title,
+                            style: theme.textTheme.bodyLarge,
+                          ),
+                          // buildText(widget.taskModel.title, kBlackColor, textMedium,
+                          //     FontWeight.w500, TextAlign.start, TextOverflow.clip),
+                          const Gap(5),
+                          Text(
+                            widget.taskModel.description,
+                            style: theme.textTheme.bodyMedium,
+                          ),
+                        ],
+                      ),
+                    ),
+                    PopupMenuButton<int>(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      // color: kWhiteColor,
+                      elevation: 1,
+                      onSelected: (value) {
+                        switch (value) {
+                          case 0:
+                            {
+                              Navigator.pushNamed(context, Pages.updateTask,
+                                  arguments: widget.taskModel);
+                              break;
+                            }
+                          case 1:
+                            {
+                              context.read<TasksBloc>().add(
+                                  DeleteTaskEvent(taskModel: widget.taskModel));
+                              break;
+                            }
+                        }
+                      },
+                      itemBuilder: (BuildContext context) {
+                        return [
+                          PopupMenuItem<int>(
+                            value: 0,
+                            child: Row(
+                              children: [
+                                Icon(LucideIcons.file_pen_line),
+                                const Gap(10),
+                                Text(
+                                  'Edit task',
+                                  style: theme.textTheme.bodySmall,
+                                ),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem<int>(
+                            value: 1,
+                            child: Row(
+                              children: [
+                                Icon(LucideIcons.file_x, color: Colors.red,),
+                                const Gap(10),
+                                Text(
+                                  'Delete task',
+                                  style: theme.textTheme.bodySmall,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ];
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Icon(LucideIcons.ellipsis_vertical),
+                      ),
+                    ),
+                  ],
+                ),
+                // buildText(
+                //     widget.taskModel.description,
+                //     kGrey1,
+                //     textSmall,
+                //     FontWeight.normal,
+                //     TextAlign.start,
+                //     TextOverflow.clip),
+                const Gap(15),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  decoration: BoxDecoration(
+                      color: kPrimaryColor.withValues(alpha: 0.1),
+                      borderRadius: const BorderRadius.all(Radius.circular(5))),
+                  child: Row(
                     children: [
+                      Icon(LucideIcons.calendar_days),
+                      const Gap(10),
                       Expanded(
-                          child: buildText(
-                              widget.taskModel.title,
-                              kBlackColor,
-                              textMedium,
-                              FontWeight.w500,
-                              TextAlign.start,
-                              TextOverflow.clip)),
-                      PopupMenuButton<int>(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                        child: Text(
+                          '${widget.taskModel.startDateTime?.format() ?? 'None'} - ${widget.taskModel.stopDateTime?.format() ?? 'None'}',
+                          style: theme.textTheme.labelSmall,
                         ),
-                        color: kWhiteColor,
-                        elevation: 1,
-                        onSelected: (value) {
-                          switch (value) {
-                            case 0:
-                              {
-                                Navigator.pushNamed(context, Pages.updateTask,
-                                    arguments: widget.taskModel);
-                                break;
-                              }
-                            case 1:
-                              {
-                                context.read<TasksBloc>().add(DeleteTaskEvent(
-                                    taskModel: widget.taskModel));
-                                break;
-                              }
-                          }
-                        },
-                        itemBuilder: (BuildContext context) {
-                          return [
-                            PopupMenuItem<int>(
-                              value: 0,
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset(
-                                    'assets/svgs/edit.svg',
-                                    width: 20,
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  buildText(
-                                      'Edit task',
-                                      kBlackColor,
-                                      textMedium,
-                                      FontWeight.normal,
-                                      TextAlign.start,
-                                      TextOverflow.clip)
-                                ],
-                              ),
-                            ),
-                            PopupMenuItem<int>(
-                              value: 1,
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset(
-                                    'assets/svgs/delete.svg',
-                                    width: 20,
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  buildText(
-                                      'Delete task',
-                                      kRed,
-                                      textMedium,
-                                      FontWeight.normal,
-                                      TextAlign.start,
-                                      TextOverflow.clip)
-                                ],
-                              ),
-                            ),
-                          ];
-                        },
-                        child:
-                            SvgPicture.asset('assets/svgs/vertical_menu.svg'),
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  buildText(widget.taskModel.description, kGrey1, textSmall,
-                      FontWeight.normal, TextAlign.start, TextOverflow.clip),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 20),
-                      decoration: BoxDecoration(
-                          color: kPrimaryColor.withValues(alpha: 0.1),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(5))),
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            'assets/svgs/calender.svg',
-                            width: 12,
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: buildText(
-                                '${formatDate(dateTime: widget.taskModel.startDateTime.toString())} - ${formatDate(dateTime: widget.taskModel.stopDateTime.toString())}',
-                                kBlackColor,
-                                textTiny,
-                                FontWeight.w400,
-                                TextAlign.start,
-                                TextOverflow.clip),
-                          )
-                        ],
-                      )),
-                ],
-              ),
+                ),
+              ],
             ),
-            const SizedBox(
-              width: 10,
-            ),
-          ],
-        ));
+          ),
+          const Gap(10),
+        ],
+      ),
+    );
   }
 }

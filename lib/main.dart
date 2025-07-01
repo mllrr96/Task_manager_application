@@ -33,12 +33,45 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           initialRoute: Pages.initial,
           onGenerateRoute: onGenerateRoute,
+          themeMode: ThemeMode.system,
           theme: ThemeData(
             fontFamily: 'Sora',
             visualDensity: VisualDensity.adaptivePlatformDensity,
             canvasColor: Colors.transparent,
             colorScheme: ColorScheme.fromSeed(seedColor: kPrimaryColor),
             useMaterial3: true,
+          ).copyWith(
+            scaffoldBackgroundColor: Colors.white,
+            filledButtonTheme: FilledButtonThemeData(
+              style: ButtonStyle(
+                shape: WidgetStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                backgroundColor: WidgetStateProperty.all(Color(0xFFB0AFAF)),
+              ),
+            ),
+          ),
+          darkTheme: ThemeData(
+            fontFamily: 'Sora',
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+            canvasColor: Colors.transparent,
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: kPrimaryColor,
+              brightness: Brightness.dark,
+            ),
+            useMaterial3: true,
+          ).copyWith(
+            filledButtonTheme: FilledButtonThemeData(
+              style: ButtonStyle(
+                shape: WidgetStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
       ),
